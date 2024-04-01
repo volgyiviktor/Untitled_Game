@@ -1,0 +1,4 @@
+repository "Untitled_Game@IKIWAMI@cloud"
+  path "/"
+    br "/main"
+    co "/main"
