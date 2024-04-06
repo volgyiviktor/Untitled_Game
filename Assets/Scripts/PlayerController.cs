@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,16 +9,84 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     Rigidbody2D rb;
+    
+    Animator animator;
 
     public float walkSpeed = 5F;
+    public float runSpeed = 10F;
+
+    public float CurrentMoveSpeed
+    {
+        get
+        {
+            if (IsMoving)
+            {
+                if (IsRunning)
+                {
+                    return runSpeed;
+                }
+                else
+                {
+                    return walkSpeed;
+                }
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
 
     Vector2 moveInput;
 
-    public bool IsMoving { get; private set; }
+    [SerializeField]
+    private bool isMoving = false;
+    public bool IsMoving
+    {
+        get
+        {
+            return isMoving;
+        }
+        private set
+        {
+            isMoving = value;
+            animator.SetBool("IsMoving", value);
+        }
+    }
+
+    [SerializeField]
+    private bool isRunning = false;
+    public bool IsRunning
+    {
+        get
+        {
+            return isRunning;
+        }
+        private set
+        {
+            isRunning = value;
+            animator.SetBool("IsRunning", value);
+        }
+    }
+
+    private bool isFacingRight = true;
+    public bool IsFacingRight
+    {
+        get
+        {
+            return isFacingRight;
+        }
+        private set
+        {
+            transform.localScale *= new Vector2(-1, 1);
+            isFacingRight = value;
+        }
+    }
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator= GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
@@ -33,12 +103,37 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(moveInput.x * walkSpeed, rb.velocity.y);
+        rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
         IsMoving = moveInput != Vector2.zero;
+        SetFacingDirection(moveInput);
+    }
+
+    private void SetFacingDirection(Vector2 moveInput)
+    {
+        if(moveInput.x>0 && !IsFacingRight)
+        {
+            IsFacingRight = true;
+        }
+        else if(moveInput.x<0 && IsFacingRight)
+        {
+            IsFacingRight = false;
+        }
+    }
+
+    public void OnRun(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        {
+            IsRunning = true;
+        }
+        else if(context.canceled)
+        {
+            IsRunning = false;
+        }
     }
 }
