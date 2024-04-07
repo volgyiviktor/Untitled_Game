@@ -5,7 +5,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody2D), typeof(TouchingDirections))]
 public class PlayerController : MonoBehaviour
 {
     Rigidbody2D rb;
@@ -14,6 +14,9 @@ public class PlayerController : MonoBehaviour
 
     public float walkSpeed = 5F;
     public float runSpeed = 10F;
+    private float jumpImpulse=10F;
+    Vector2 moveInput;
+    TouchingDirections touchingDirections;
 
     public float CurrentMoveSpeed
     {
@@ -36,8 +39,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
-    Vector2 moveInput;
 
     [SerializeField]
     private bool isMoving = false;
@@ -70,6 +71,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private bool isFacingRight = true;
+
     public bool IsFacingRight
     {
         get
@@ -87,6 +89,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator= GetComponent<Animator>();
+        touchingDirections= GetComponent<TouchingDirections>();
     }
 
     // Start is called before the first frame update
@@ -104,6 +107,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
+        animator.SetFloat("YVelocity", rb.velocity.y);
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -134,6 +138,15 @@ public class PlayerController : MonoBehaviour
         else if(context.canceled)
         {
             IsRunning = false;
+        }
+    }
+
+    public void OnJump (InputAction.CallbackContext context)
+    {
+        if(context.started && touchingDirections.IsGrounded)
+        {
+            animator.SetTrigger("Jump");
+            rb.velocity=new Vector2(rb.velocity.x, jumpImpulse);
         }
     }
 }
