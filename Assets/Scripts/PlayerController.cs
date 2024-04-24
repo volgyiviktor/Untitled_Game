@@ -14,7 +14,10 @@ public class PlayerController : MonoBehaviour
 
     public float walkSpeed = 5F;
     public float runSpeed = 10F;
-    private float jumpImpulse=10F;
+    public float airSpeed = 5F;
+    public float runAirSpeed = 10F;
+    private float jumpImpulse= 10F;
+    private float jumpHeightMultiplier = 0.5F;
     Vector2 moveInput;
     TouchingDirections touchingDirections;
 
@@ -22,15 +25,29 @@ public class PlayerController : MonoBehaviour
     {
         get
         {
-            if (IsMoving)
+            if (IsMoving && !touchingDirections.IsWallSliding)
             {
-                if (IsRunning)
+                if (touchingDirections.IsGrounded)
                 {
-                    return runSpeed;
+                    if (IsRunning)
+                    {
+                        return runSpeed;
+                    }
+                    else
+                    {
+                        return walkSpeed;
+                    }
                 }
                 else
                 {
-                    return walkSpeed;
+                    if (IsRunning)
+                    {
+                        return runAirSpeed;
+                    }
+                    else
+                    {
+                        return airSpeed;
+                    }
                 }
             }
             else
@@ -113,7 +130,7 @@ public class PlayerController : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
-        IsMoving = moveInput != Vector2.zero;
+        IsMoving = moveInput.x != 0;
         SetFacingDirection(moveInput);
     }
 
@@ -143,10 +160,20 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump (InputAction.CallbackContext context)
     {
-        if(context.started && touchingDirections.IsGrounded)
+        if (context.started && touchingDirections.IsGrounded)
         {
             animator.SetTrigger("Jump");
-            rb.velocity=new Vector2(rb.velocity.x, jumpImpulse);
+            rb.velocity = new Vector2(rb.velocity.x, jumpImpulse);
+        }
+        else if (context.started && touchingDirections.IsWallSliding)
+        {
+            animator.SetTrigger("Jump");
+            //rb.velocity = new Vector2(5, 5);
+            rb.AddForce(new Vector2(5, 5), ForceMode2D.Impulse);
+        }
+        if(context.canceled)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y*jumpHeightMultiplier);
         }
     }
 }
