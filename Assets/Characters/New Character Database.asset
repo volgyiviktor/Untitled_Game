@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbfd3f4a8e446534ca9c4fff05ca2f6a, type: 3}
+  m_Name: New Character Database
+  m_EditorClassIdentifier: 
+  character:
+  - characterName: Sanyo
+    characterSprite: {fileID: 21300000, guid: 54a17b736c1a0a54298078c9d3cea31d, type: 3}
+  - characterName: Feri
+    characterSprite: {fileID: 21300000, guid: 66499b6a12921e24881a95d640e37d88, type: 3}
+  - characterName: Zsolti
+    characterSprite: {fileID: 21300000, guid: f15ec9b9bcc72a24d96fde089f856e10, type: 3}
+  - characterName: "B\xE9la"
+    characterSprite: {fileID: 21300000, guid: f7e17538574377c48b84d46a5a8d5269, type: 3}
+  - characterName: Mari
+    characterSprite: {fileID: -8372036467801240965, guid: c9a8326e37daa654dadaf47ec52e7f22, type: 3}
