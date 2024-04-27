@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
+
 
 public class Settings : MonoBehaviour
 {
@@ -21,6 +24,7 @@ public class Settings : MonoBehaviour
     public Sprite musicOffImg;
     public Button musicbutton;
     private bool musicOn = true;
+    public AudioMixer mixer;
 
     public AudioSource audioSource;
 
@@ -41,6 +45,8 @@ public class Settings : MonoBehaviour
             musicbutton.image.sprite = musicOffImg;
             musicOn = false;
             audioSource.mute = true;
+            mixer.SetFloat("volume",-80);
+
 
         }
         else
@@ -48,8 +54,10 @@ public class Settings : MonoBehaviour
             musicbutton.image.sprite = musicOnImg;
             musicOn = true;
             audioSource.mute = false;
+            mixer.SetFloat("volume", 0);
 
         }
+       
     }
 
 }

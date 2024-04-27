@@ -8,11 +8,19 @@ public class MainMenu : MonoBehaviour
 {
     public void NewGame()
     {
-        SceneManager.LoadSceneAsync(1);
+        //SceneManager.LoadSceneAsync(1);
+        SceneManager.LoadScene(1);
     }
 
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void LoadLevel(int level)
+    {
+        PlayerManager.isGameOver = true;
+        SceneManager.LoadScene(level);
+
     }
 }

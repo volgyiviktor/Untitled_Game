@@ -188,12 +188,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 110160321}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.071, y: -0.065, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: 0.00013442268, z: -0, w: 1}
+  m_LocalPosition: {x: 1091.9688, y: -5.7262073, z: -87.00456}
+  m_LocalScale: {x: 238.99712, y: 241.94173, z: 1394.6538}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 865393476}
+  m_Father: {fileID: 844973275}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &110160323
 Animator:
@@ -1104,6 +1104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicOffImg: {fileID: 21300000, guid: e6eea220f3a99cd42a719ff182f3f111, type: 3}
   musicbutton: {fileID: 2119033829}
+  mixer: {fileID: 24100000, guid: dd5030985c4bc2445be04da48e0a295b, type: 2}
   audioSource: {fileID: 723441817}
 --- !u!114 &445241275
 MonoBehaviour:
@@ -2417,6 +2418,70 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &844973274
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 844973275}
+  - component: {fileID: 844973276}
+  m_Layer: 5
+  m_Name: Character
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &844973275
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 844973274}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 110160322}
+  - {fileID: 1653896604}
+  m_Father: {fileID: 1429376514}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 500, y: 50}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &844973276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 844973274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c91e21fb95d7f4438afdfc7cdbb57fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skins:
+  - {fileID: 110160321}
+  - {fileID: 1653896603}
+  selectedCharacter: 0
+  characters:
+  - name: "KunB\xE9la"
+    price: 5
+    isUnlocked: 0
+  - name: "Ram\xF3na"
+    price: 0
+    isUnlocked: 0
+  unlockButton: {fileID: 2067283108}
+  nameText: {fileID: 559521579}
+  coinsText: {fileID: 1286754320}
 --- !u!1 &855197666
 GameObject:
   m_ObjectHideFlags: 0
@@ -2503,7 +2568,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &865393476
 Transform:
   m_ObjectHideFlags: 0
@@ -2516,9 +2581,7 @@ Transform:
   m_LocalPosition: {x: 1075, y: 9.999992, z: -87}
   m_LocalScale: {x: 238.99709, y: 241.94174, z: 1394.6537}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1653896604}
-  - {fileID: 110160322}
+  m_Children: []
   m_Father: {fileID: 1429376514}
   m_LocalEulerAnglesHint: {x: 0, y: 0.015, z: 0}
 --- !u!95 &865393477
@@ -3750,6 +3813,7 @@ RectTransform:
   - {fileID: 1822824016}
   - {fileID: 865393476}
   - {fileID: 332761285}
+  - {fileID: 844973275}
   m_Father: {fileID: 1041076189}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3882,12 +3946,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1653896603}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.37, y: 0, z: -0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: 0.00013442268, z: -0, w: 1}
+  m_LocalPosition: {x: 1163.429, y: 10, z: -87.02377}
+  m_LocalScale: {x: 238.99712, y: 241.94173, z: 1394.6538}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 865393476}
+  m_Father: {fileID: 844973275}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1653896605
 Animator:
@@ -4179,12 +4243,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 445241272}
         m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: NewGame
-        m_Mode: 1
+        m_MethodName: LoadLevel
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -4418,7 +4482,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2051246962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4462,7 +4526,7 @@ GameObject:
   - component: {fileID: 2067283109}
   - component: {fileID: 2067283108}
   m_Layer: 5
-  m_Name: Button (Legacy)
+  m_Name: Unlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4511,7 +4575,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2067283109}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 865393479}
+        m_TargetAssemblyTypeName: CharacterSelect, Assembly-CSharp
+        m_MethodName: Unlock
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2067283109
 MonoBehaviour:
   m_ObjectHideFlags: 0

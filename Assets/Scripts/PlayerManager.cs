@@ -20,6 +20,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
+      
         characterIndex = PlayerPrefs.GetInt("SelectedCharacter", 0);
         GameObject player = Instantiate(playerPrefabs[characterIndex], lastCheckPointPos, Quaternion.identity);
         VCam.m_Follow = player.transform;
