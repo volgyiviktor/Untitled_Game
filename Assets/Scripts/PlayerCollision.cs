@@ -18,6 +18,20 @@ public class PlayerCollision : MonoBehaviour
             gameObject.SetActive(false);
             PlayerManager.isGameOver = true;
         }
+        if (collision.transform.tag == "Win")
+        {
+            //HealthManager.health--;
+            //if(HealthManager.health <=0){
+            //    PlayerManager.isGameOver = true;
+            //    AudioManager.instance.Play("GameOver");
+            //   
+            //}else{
+            //    StartCoroutine(GetHurt());
+            //}
+            AudioManager.instance.Play("Win");
+            gameObject.SetActive(false);
+            PlayerManager.isWinGame = true;
+        }
     }
     IEnumerator GetHurt(){ 
         Physics2D.IgnoreLayerCollision(6,8);

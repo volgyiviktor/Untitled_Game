@@ -6,7 +6,9 @@ using TMPro;
 public class PlayerManager : MonoBehaviour
 {
     public static bool isGameOver;
+    public static bool isWinGame;
     public GameObject gameOverScreen;
+    public GameObject winGame;
     public GameObject pauseMenuScreen;
 
     public static Vector2 lastCheckPointPos = new Vector2(-3, 0);
@@ -26,6 +28,8 @@ public class PlayerManager : MonoBehaviour
         VCam.m_Follow = player.transform;
         numberOfCoins = PlayerPrefs.GetInt("NumberOfCoins", 0);
         isGameOver = false;
+        isWinGame = false;
+        Time.timeScale = 1;
 
     }
 
@@ -36,11 +40,22 @@ public class PlayerManager : MonoBehaviour
         {
             gameOverScreen.SetActive(true);
         }
+        if (isWinGame)
+        {
+            winGame.SetActive(true);
+        }
+
     }
 
     public void ReplayLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void NextLevel(int nextLevel)
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(nextLevel);
     }
 
     public void PauseGame()
