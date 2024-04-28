@@ -55,6 +55,6 @@ public class PlayerManager : MonoBehaviour
     }
     public void GoToMenu()
     {
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene(0);
     }
 }

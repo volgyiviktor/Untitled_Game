@@ -27,10 +27,9 @@ public class Escape : MonoBehaviour
     }
     public void Home()
     {
-       
-       PlayerManager.isGameOver = true;
         SceneManager.LoadSceneAsync(0);
-     
+        //SceneManager.LoadScene(0);
+
     }
 
 }
