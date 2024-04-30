@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Win
   - Zombie
+  - PortalA
+  - PortalB
   layers:
   - Default
   - TransparentFX
