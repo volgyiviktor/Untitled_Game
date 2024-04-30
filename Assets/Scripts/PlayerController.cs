@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(TouchingDirections))]
@@ -15,20 +14,7 @@ public class PlayerController : MonoBehaviour
 
     public float walkSpeed = 5F;
     public float runSpeed = 10F;
-<<<<<<< Updated upstream
     private float jumpImpulse=10F;
-=======
-    public float airSpeed = 5F;
-    public float runAirSpeed = 10F;
-    private float jumpImpulse = 10F;
-    private float jumpHeightMultiplier = 0.5F;
-    private float wallHopForce=2000F;
-    private float wallJumpForce=2000F;
-
-    Vector2 wallHopDirection;
-    Vector2 wallJumpDirection;
-
->>>>>>> Stashed changes
     Vector2 moveInput;
     TouchingDirections touchingDirections;
 
@@ -49,19 +35,10 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                if (WallJump)
-                {
-                    return walkSpeed;
-                }
-                else
-                {
-                    return 0;
-                }
+                return 0;
             }
         }
     }
-
-    private bool WallJump = false;
 
     [SerializeField]
     private bool isMoving = false;
@@ -94,7 +71,6 @@ public class PlayerController : MonoBehaviour
     }
 
     private bool isFacingRight = true;
-    private int facingDirection = 1;
 
     public bool IsFacingRight
     {
@@ -106,7 +82,6 @@ public class PlayerController : MonoBehaviour
         {
             transform.localScale *= new Vector2(-1, 1);
             isFacingRight = value;
-            facingDirection*=-1;
         }
     }
 
@@ -115,8 +90,6 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator= GetComponent<Animator>();
         touchingDirections= GetComponent<TouchingDirections>();
-        wallHopDirection.Normalize();
-        wallJumpDirection.Normalize();
     }
 
     // Start is called before the first frame update
@@ -133,10 +106,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(!touchingDirections.IsWallSliding)
-        {
-            rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
-        }
+        rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
         animator.SetFloat("YVelocity", rb.velocity.y);
     }
 
@@ -173,33 +143,11 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump (InputAction.CallbackContext context)
     {
-<<<<<<< Updated upstream
         if(context.started && touchingDirections.IsGrounded)
         {
             animator.SetTrigger("Jump");
             rb.velocity=new Vector2(rb.velocity.x, jumpImpulse);
             AudioManager.instance.Play("Jump");
-=======
-        if (context.started && touchingDirections.IsGrounded) //sima ugrás
-        {
-            animator.SetTrigger("Jump");
-            rb.velocity = new Vector2(rb.velocity.x, jumpImpulse);
-        }
-
-        else if (context.started && touchingDirections.IsWallSliding) //leugrás a fallról
-        {
-            WallJump = true;
-            animator.SetTrigger("Jump");
-            //Vector2 forceToAdd = new Vector2(wallHopForce * wallHopDirection.x * -facingDirection, wallHopForce * wallHopDirection.y);
-            Vector2 forceToAdd = new Vector2(100 * -facingDirection, 5);
-            rb.AddForce(forceToAdd, ForceMode2D.Impulse);
-            WallJump = false;
-        }
-
-        if (context.canceled) //állítható magasságú ugrás
-        {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y*jumpHeightMultiplier);
->>>>>>> Stashed changes
         }
     }
 }
