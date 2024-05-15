@@ -15,21 +15,20 @@ public class PlayerController : MonoBehaviour
     public int jumpRemaining = 0;
     public float walkSpeed = 5F;
     public float runSpeed = 10F;
-    public float airSpeed = 10F;
+    public float airSpeed = 8F;
     private float jumpImpulse=10F;
     private float variableJump = 0.45F;
     private int facing = 1;
     Vector2 moveInput;
     TouchingDirections touchingDirections;
 
-    /*public float CurrentMoveSpeed
+    public float CurrentMoveSpeed
     {
         get
         {
-            if(touchingDirections.IsGrounded)
+            if (IsMoving && !touchingDirections.IsOnWall)
             {
-                jumpRemaining = 1;
-                if (IsMoving && !touchingDirections.IsOnWall)
+                if (touchingDirections.IsGrounded)
                 {
                     if (IsRunning)
                     {
@@ -42,15 +41,15 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    return walkSpeed;
+                    return airSpeed;
                 }
             }
             else
             {
-                return airSpeed;
+                return 0;
             }
         }
-    }*/
+    }
 
     [SerializeField]
     private bool isMoving = false;
@@ -119,7 +118,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
+        rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
         animator.SetFloat("YVelocity", rb.velocity.y);
     }
 
@@ -128,14 +127,6 @@ public class PlayerController : MonoBehaviour
         moveInput = context.ReadValue<Vector2>();
         IsMoving = moveInput != Vector2.zero;
         SetFacingDirection(moveInput);
-        if(isRunning)
-        {
-            rb.velocity = new Vector2(moveInput.x * 5, rb.velocity.y);
-        }
-        else
-        {
-            rb.velocity = new Vector2(moveInput.x * 10, rb.velocity.y);
-        }
     }
 
     private void SetFacingDirection(Vector2 moveInput)
@@ -171,18 +162,12 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpImpulse);
             AudioManager.instance.Play("Jump");
         }
-        else if (context.started && jumpRemaining>0 && !touchingDirections.IsOnWall)
+        else if (context.started && jumpRemaining>0)
         {
             jumpRemaining--;
             animator.SetTrigger("Jump");
             rb.velocity=new Vector2(rb.velocity.x, jumpImpulse);
             AudioManager.instance.Play("Jump");
-        }
-        else if(touchingDirections.IsOnWall && !touchingDirections.IsGrounded && moveInput.x==0)
-        {
-            jumpRemaining = 1;
-            Vector2 forceToAdd = new Vector2(2.5f*-facing,5);
-            rb.AddForce(forceToAdd, ForceMode2D.Impulse);
         }
         else if(context.canceled && rb.velocity.y>0)
         {
