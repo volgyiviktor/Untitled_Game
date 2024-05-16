@@ -72,9 +72,40 @@ public class Damageable : MonoBehaviour
             if(value == false)
             {
                 damageableDeath.Invoke();
+                AudioManager.instance.Play("GameOver");
+                this.Wait(1f, () => {
+                    Debug.Log("The DEAD message");
+                    Camera.main.backgroundColor = Color.grey;
+                    PlayerManager.isGameOver = true;
+                });
+                //PlayerManager.isGameOver = true;
             }
         }
     }
+
+    [SerializeField]
+    private bool _isDead = true;
+
+    public bool IsDead
+    {
+        get
+        {
+            return _isDead;
+        }
+        set
+        {
+            _isDead = value;
+            animator.SetBool(AnimationStrings.isDead, value);
+            Debug.Log("IsDead set " + value);
+
+            if (value == false)
+            {
+                Time.timeScale = 0;
+
+            }
+        }
+    }
+
 
     // The velocity should not be changed while this is true but needs to be respected by other physics components like
     // the player controller
@@ -122,7 +153,7 @@ public class Damageable : MonoBehaviour
             animator.SetTrigger(AnimationStrings.hitTrigger);
             LockVelocity = true;
             damageableHit?.Invoke(damage, knockback);
-            CharacterEvents.characterDamaged.Invoke(gameObject, damage);
+            // CharacterEvents.characterDamaged.Invoke(gameObject, damage);
 
             return true;
         }

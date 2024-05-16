@@ -5,22 +5,23 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(TouchingDirections))]
+[RequireComponent(typeof(Rigidbody2D), typeof(TouchingDirections), typeof(Damageable))]
 public class PlayerController : MonoBehaviour
 {
     Rigidbody2D rb;
-    
+
     Animator animator;
 
     public int jumpRemaining = 0;
     public float walkSpeed = 5F;
     public float runSpeed = 10F;
     public float airSpeed = 8F;
-    private float jumpImpulse=10F;
+    private float jumpImpulse = 10F;
     private float variableJump = 0.45F;
     private int facing = 1;
     Vector2 moveInput;
     TouchingDirections touchingDirections;
+    Damageable damageable;
 
     public float CurrentMoveSpeed
     {
@@ -92,7 +93,7 @@ public class PlayerController : MonoBehaviour
         private set
         {
             transform.localScale *= new Vector2(-1, 1);
-            facing*=-1;
+            facing *= -1;
             isFacingRight = value;
         }
     }
@@ -100,42 +101,76 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        animator= GetComponent<Animator>();
-        touchingDirections= GetComponent<TouchingDirections>();
+        animator = GetComponent<Animator>();
+        touchingDirections = GetComponent<TouchingDirections>();
+        damageable = GetComponent<Damageable>();
+    }
+    public bool CanMove
+    {
+        get
+        {
+            return animator.GetBool(AnimationStrings.canMove);
+        }
+    }
+
+    public bool IsAlive
+    {
+        get
+        {
+            return animator.GetBool(AnimationStrings.isAlive);
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
+            rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
         animator.SetFloat("YVelocity", rb.velocity.y);
     }
+
+    //public void OnMove(InputAction.CallbackContext context)
+    //{
+    //    moveInput = context.ReadValue<Vector2>();
+    //    IsMoving = moveInput != Vector2.zero;
+    //    SetFacingDirection(moveInput);
+    //}
+
 
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
-        IsMoving = moveInput != Vector2.zero;
-        SetFacingDirection(moveInput);
+
+        if (IsAlive)
+        {
+            IsMoving = moveInput != Vector2.zero;
+
+            SetFacingDirection(moveInput);
+        }
+        else
+        {
+            IsMoving = false;
+        }
+
     }
 
     private void SetFacingDirection(Vector2 moveInput)
     {
-        if(moveInput.x>0 && !IsFacingRight)
+        if (moveInput.x > 0 && !IsFacingRight)
         {
             IsFacingRight = true;
         }
-        else if(moveInput.x<0 && IsFacingRight)
+        else if (moveInput.x < 0 && IsFacingRight)
         {
             IsFacingRight = false;
         }
@@ -143,37 +178,54 @@ public class PlayerController : MonoBehaviour
 
     public void OnRun(InputAction.CallbackContext context)
     {
-        if(context.started)
+        if (context.started)
         {
             IsRunning = true;
         }
-        else if(context.canceled)
+        else if (context.canceled)
         {
             IsRunning = false;
         }
     }
 
-    public void OnJump (InputAction.CallbackContext context)
+    public void OnJump(InputAction.CallbackContext context)
     {
         if (context.started && touchingDirections.IsGrounded && !touchingDirections.IsOnWall)
         {
-            jumpRemaining=1;
+            jumpRemaining = 1;
             animator.SetTrigger("Jump");
             rb.velocity = new Vector2(rb.velocity.x, jumpImpulse);
             AudioManager.instance.Play("Jump");
         }
-        else if (context.started && jumpRemaining>0)
+        else if (context.started && jumpRemaining > 0)
         {
             jumpRemaining--;
             animator.SetTrigger("Jump");
-            rb.velocity=new Vector2(rb.velocity.x, jumpImpulse);
+            rb.velocity = new Vector2(rb.velocity.x, jumpImpulse);
             AudioManager.instance.Play("Jump");
         }
-        else if(context.canceled && rb.velocity.y>0)
+        else if (context.canceled && rb.velocity.y > 0)
         {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y*variableJump);
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * variableJump);
         }
     }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            animator.SetTrigger(AnimationStrings.attackTrigger);
+        }
+    }
+
+    public void OnRangedAttack(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            animator.SetTrigger(AnimationStrings.rangedAttackTrigger);
+        }
+    }
+
     public void OnHit(int damage, Vector2 knockback)
     {
         rb.velocity = new Vector2(knockback.x, rb.velocity.y + knockback.y);

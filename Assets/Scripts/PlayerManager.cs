@@ -22,14 +22,13 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
-      
+        Time.timeScale = 1;
         characterIndex = PlayerPrefs.GetInt("SelectedCharacter", 0);
         GameObject player = Instantiate(playerPrefabs[characterIndex], lastCheckPointPos, Quaternion.identity);
         VCam.m_Follow = player.transform;
         numberOfCoins = PlayerPrefs.GetInt("NumberOfCoins", 0);
         isGameOver = false;
         isWinGame = false;
-        Time.timeScale = 1;
 
     }
 
@@ -39,6 +38,7 @@ public class PlayerManager : MonoBehaviour
         if (isGameOver)
         {
             gameOverScreen.SetActive(true);
+            Time.timeScale = 0;
         }
         if (isWinGame)
         {
